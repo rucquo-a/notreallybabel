@@ -69,8 +69,12 @@ bool	AWin::gestEvent(sf::Event event)
       while (it != itEnd)
         {
           if ((*it)->isIn(mX, mY) == true)
-            (*it)->getWin()->mainDraw();
-          it++;
+	    {
+	      while (getButton().size() > 0)
+		getButton().pop_back();
+	      (*it)->getWin()->mainDraw();
+	    }
+	  it++;
         }
     }
   if (event.Type == sf::Event::Resized)
@@ -102,6 +106,8 @@ void	AWin::launchWindow()
     {
       if ((*it)->getTarget() == true)
 	{
+	  while (getButton().empty() == false)
+	      getButton().pop_back();
 	  (*it)->getWin()->mainDraw();
 	}
       it++;
@@ -190,7 +196,7 @@ void	AWin::upDown()
     }
 }
 
-void	AWin::drawContent() const
+void	AWin::drawContent()
 {
   std::list<Button*>	but;
   std::list<Button*>::iterator	it;
@@ -236,7 +242,7 @@ void	AWin::addButton(Button* next)
   _button.push_back(next);
 }
 
-std::list<Button*>	AWin::getButton() const
+std::list<Button*>	&AWin::getButton()
 {
   return (_button);
 }

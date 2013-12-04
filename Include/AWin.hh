@@ -34,8 +34,8 @@ public:
   virtual void			upDown();
   virtual void			upUp();
   virtual void			mainDraw() = 0;
-  virtual void			drawContent() const;
-  virtual std::list<Button*>	getButton() const;
+  virtual void			drawContent();
+  virtual std::list<Button*>&	getButton();
   virtual void			addButton(Button*);
   virtual bool			gestEvent(sf::Event);
   virtual void			updateButton();

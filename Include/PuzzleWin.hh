@@ -20,14 +20,16 @@ public:
   void		drawDiff();
   virtual void		upUp();
   virtual void		upDown();
-  void			drawPic();
+  void			drawPic(std::list<sf::Sprite*>&);
+  void			loadPic(std::list<sf::Sprite*>&);
   bool		getPicSet() const;
   bool		getDiffSet() const;
+  bool		gestMove(sf::Event&);
   void		setPicSet(bool);
   void		setDiffSet(bool);
   void		setDiff(std::string);
   std::string&	getDiff();
-  void		setPic(std::string&);
+  void		setPic(std::string);
   sf::Image&	getPic();
   bool	isGood() const;
   PuzzleWin(sf::RenderWindow&);

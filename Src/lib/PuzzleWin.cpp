@@ -28,8 +28,9 @@ void	PuzzleWin::setDiffSet(bool isSet)
   _diffSet = isSet;
 }
 
-void	PuzzleWin::setPic(std::string& pic)
+void	PuzzleWin::setPic(std::string pic)
 {
+  _picture = pic;
 }
 
 bool	PuzzleWin::getPicSet() const
@@ -100,8 +101,10 @@ void	PuzzleWin::upUp()
             itEnd = but.end();
           itEnd--;
           (*itEnd)->setTarget(true);
-	  this->setDiff((*itEnd)->getContent());
-	  this->setDiffSet(true);
+	  if (getDiffSet() == false)
+	    this->setPic((*itEnd)->getContent());
+	  else
+	    this->setDiff((*itEnd)->getContent());
 	}
       else if (itEnd == it)
         {
@@ -133,15 +136,17 @@ void	PuzzleWin::upDown()
           if (it == itEnd)
             it = but.begin();
           (*it)->setTarget(true);
-	  this->setDiff((*it)->getContent());
-	  this->setDiffSet(true);
-        }
+	  if (getDiffSet() == false)
+	    this->setPic((*it)->getContent());
+	  else
+	    this->setDiff((*it)->getContent());
+	}
       else
         it++;
     }
 }
 
-void	PuzzleWin::drawPic()
+void	PuzzleWin::loadPic(std::list<sf::Sprite*> &_spr)
 {
   DIR*	dir;
   struct dirent	*ent;
@@ -151,10 +156,11 @@ void	PuzzleWin::drawPic()
   std::string	fullName;
   sf::Image*	pic;
   sf::Sprite*	spr;
-  int	x = 0;
+  int	x = 25;
   int	y = 50;
   int	litX = getWindow().GetWidth() / 4;
   int	litY = getWindow().GetHeight() / 2;
+  Button	*next;
 
   this->setType(GAME);
   dir = opendir("./Ressources/Game/Puzzle/Pic");
@@ -171,21 +177,77 @@ void	PuzzleWin::drawPic()
 		  pic = new sf::Image;
 		  if (pic->LoadFromFile(fullName) == true)
 		    {
+		      next = new Button(x, y, x + 175, y + 175, name);
+		      if (x == 25 && y == 50)
+			{			
+			  this->setPic(next->getContent());
+			  next->setTarget(true);
+			}
+		      addButton(next);
+		      this->setType(MENU);
+		      next->setWin(this);
+		      next->DrawContent(getWindow());
 		      spr = new sf::Sprite;
 		      spr->SetImage(*pic);
-		      spr->SetPosition(x, y);
+		      spr->SetPosition(x, y+50);
 		      spr->Resize(150, 150);
 		      getWindow().Draw(*spr);
+		      _spr.push_front(spr);
 		      x += 150 + 50;
 		      if (x >= getWindow().GetWidth())
 			{
 			  x = 0;
 			  y += 300;
 			}
+
 		    }
 		}
 	}
     }
+}
+
+void	PuzzleWin::drawPic(std::list<sf::Sprite*>& spr)
+{
+  std::list<sf::Sprite*>::iterator	it = spr.begin();
+  std::list<sf::Sprite*>::iterator	itEnd = spr.end();
+
+  while (it != itEnd)
+    {
+      getWindow().Draw(*(*it));
+      it++;
+    }
+}
+
+bool	PuzzleWin::gestMove(sf::Event &event)
+{/*
+  if (event.Type == sf::Event::MouseMoved)
+    {
+      mX = event.MouseMove.X;
+      mY = event.MouseMove.Y;
+      it = but.begin();
+      itEnd = but.end();
+      while (it != itEnd)
+        {
+          if ((*it)->isIn(mX, mY) == true)
+            {
+              itNew = it;
+              (*it)->setTarget(true);
+	      if (getDiffSet() == false)
+		this->setPic((*it)->getContent());
+	      else
+		this->setDiff((*it)->getContent());          
+	      newCur = true;
+            }
+          it++;
+        }
+      it = but.begin();
+      while (it != itEnd && newCur == true)
+        {
+          if (it != itNew)
+            (*it)->setTarget(false);
+          it++;
+        }
+	}*/
 }
 
 void	PuzzleWin::mainDraw()
@@ -196,7 +258,7 @@ void	PuzzleWin::mainDraw()
   sf::Event	event;
   sf::Event	last;
   bool		isIn = true;
-
+  std::list<sf::Sprite*>	spr;
 
   getWindow().Clear();
   if (getPicSet() == false)
@@ -204,29 +266,43 @@ void	PuzzleWin::mainDraw()
       drawTitle(titlePic);
       getWindow().Display();
       setPicSet(true);
-      drawPic();
+      loadPic(spr);
       getWindow().Display();
-      sleep(10);
-      mainDraw();
-    }
-  else if (getDiffSet() == false)
-    {
-      drawTitle(titleDiff);
-      getWindow().Display();
-      drawDiff();
+      sleep(1);
       while (isIn == true)
 	{
 	  getWindow().GetEvent(event);
 	  if (event.Type != 15 && event.Type != 10)
 	    isIn = gestEvent(event);
 	  if (event.Type != 10 && last.Type == 10)
-	    isIn = gestEvent(last);
+	    isIn = gestMove(last);
+	  last = event;
+	  drawTitle(titlePic);
+	  drawPic(spr);
+	  getWindow().Display();
+	  usleep(40000);
+	}
+
+    }
+  else if (getDiffSet() == false)
+    {
+      drawTitle(titleDiff);
+      getWindow().Display();
+      drawDiff();
+      setDiffSet(true);
+      while (isIn == true)
+	{
+	  getWindow().GetEvent(event);
+	  if (event.Type != 15 && event.Type != 10)
+	    isIn = gestEvent(event);
+	  if (event.Type != 10 && last.Type == 10)
+	    isIn = gestMove(last);
 	  last = event;
 	  drawTitle(titleDiff);
 	  getWindow().Display();
 	  usleep(40000);
 	}
-      setDiffSet(true);
+      this->setType(GAME);  
     }
   else
     {
