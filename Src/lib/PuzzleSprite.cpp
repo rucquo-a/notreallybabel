@@ -35,3 +35,14 @@ void	PuzzleSprite::setSelect(bool is)
 {
   _isSelect = is;
 }
+
+
+void	PuzzleSprite::setId(int id)
+{
+  _id = id;
+}
+
+void	PuzzleSprite::setSprite(sf::Sprite& spr)
+{
+  _pic = spr;
+}

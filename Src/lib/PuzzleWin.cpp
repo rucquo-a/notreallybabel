@@ -51,12 +51,12 @@ void	PuzzleWin::drawDiff()
 
   x /= 2;
   y /= 3;
-
   diff = new Button(x - 150, y - 50, x + 150, y + 50, "Easy");
   y+= 150;
   this->setType(MENU);
   diff->setWin(this);
   diff->setTarget(true);
+  this->setDiff("Easy");
   addButton(diff);
   diff = new Button(x - 150, y - 50, x + 150, y + 50, "Normal");
   y+= 150;
@@ -307,7 +307,7 @@ void	PuzzleWin::mainDraw()
   else
     {
       game = new PuzzleGame(getWindow());
-      game->mainGame();
+      game->mainGame(_pic, _diff);
       setPicSet(false);
       setDiffSet(false);
       this->setType(GAME);

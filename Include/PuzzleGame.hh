@@ -14,7 +14,7 @@ class PuzzleGame
 public:
   PuzzleGame(sf::RenderWindow&);
   ~PuzzleGame();
-  void	mainGame();
+  void	mainGame(sf::Image&, std::string);
 
 
 };

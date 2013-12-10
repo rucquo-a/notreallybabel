@@ -17,6 +17,8 @@ public:
   ~PuzzleSprite();
   void		setSelect(bool);
   bool		getSelect() const;
+  void		setId(int);
+  void		setSprite(sf::Sprite&);
   sf::Sprite	&getSprite();
   int		getId() const;
   int		getPos() const;

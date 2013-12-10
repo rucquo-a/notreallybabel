@@ -40,7 +40,7 @@ bool	AWin::gestEvent(sf::Event event)
       mY = event.MouseMove.Y;
       it = but.begin();
       itEnd = but.end();
-      while (it != itEnd)
+      while (it != itEnd && but.size() > 0)
         {
           if ((*it)->isIn(mX, mY) == true)
 	    {
@@ -51,7 +51,7 @@ bool	AWin::gestEvent(sf::Event event)
 	  it++;
         }
       it = but.begin();
-      while (it != itEnd && newCur == true)
+      while (it != itEnd && newCur == true && but.size() > 0)
 	{
 	  if (it != itNew)
 	    (*it)->setTarget(false);
@@ -66,13 +66,15 @@ bool	AWin::gestEvent(sf::Event event)
       mY = event.MouseButton.Y;
       std::cout << mX <<"," << mY << std::endl;
       std::cout << event.Type << std::endl;
-      while (it != itEnd)
+      while (it != itEnd &&but.size() > 0)
         {
           if ((*it)->isIn(mX, mY) == true)
 	    {
 	      while (getButton().size() > 0)
 		getButton().pop_back();
-	      (*it)->getWin()->mainDraw();
+	      if ((*it) != NULL)
+		if ((*it)->getWin() != NULL)
+		  (*it)->getWin()->mainDraw();
 	    }
 	  it++;
         }
