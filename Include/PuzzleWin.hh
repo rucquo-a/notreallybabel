@@ -10,6 +10,7 @@
 class	PuzzleWin : public AWin
 {
   std::string	_picture;
+  std::string	_picturePuzz;
   sf::Image	_pic;
   bool		_good;
   bool		_pictureSet;

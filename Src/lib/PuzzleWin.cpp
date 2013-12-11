@@ -30,7 +30,9 @@ void	PuzzleWin::setDiffSet(bool isSet)
 
 void	PuzzleWin::setPic(std::string pic)
 {
-  _picture = pic;
+  _picturePuzz = pic;
+  pic = "./Ressources/Game/Puzzle/Pic/" + pic;
+  _good = _pic.LoadFromFile(pic);
 }
 
 bool	PuzzleWin::getPicSet() const

@@ -82,9 +82,11 @@ int	main()
       window.GetEvent(event);
       gestEvent(event, window, currentWin); 
       usleep(40000);
-      //window.Clear();
-      //currentWin.drawContent(window);
-      //window.Display();
+      window.Clear();
+      if(currentWin.getButton().size() == 0)
+	initMenu(window, currentWin);	
+      currentWin.drawContent();
+      window.Display();
     }
   return (0);
 }

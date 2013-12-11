@@ -74,7 +74,10 @@ bool	AWin::gestEvent(sf::Event event)
 		getButton().pop_back();
 	      if ((*it) != NULL)
 		if ((*it)->getWin() != NULL)
-		  (*it)->getWin()->mainDraw();
+		  {
+		    (*it)->getWin()->mainDraw();
+		    return (false);
+		  }
 	    }
 	  it++;
         }
@@ -86,7 +89,10 @@ bool	AWin::gestEvent(sf::Event event)
   if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Up)
     upUp();
   if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Return)
-    launchWindow();
+    {    
+      launchWindow();
+      return (false);
+    }  
   getWindow().Clear();
   drawContent();
   getWindow().Display();
