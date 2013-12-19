@@ -1,11 +1,13 @@
 #include	<SFML/Window.hpp>
 #include	<SFML/Graphics.hpp>
 #include	<list>
+#include	<unistd.h>
+#include	<iostream>
+#include	<string>
 #include	"Choose.hh"
 #include	"Leave.hh"
 #include	"Win.hh"
-#include	<iostream>
-#include	<string>
+
 
 void	initMenu(sf::RenderWindow& win, AWin &current)
 {

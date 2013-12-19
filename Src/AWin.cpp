@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include "AWin.hh"
 
 AWin::AWin(sf::RenderWindow& window) : _window(window)
