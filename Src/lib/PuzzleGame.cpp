@@ -1,6 +1,7 @@
 #include <list>
 #include <iterator>
 #include <stdlib.h>
+#include <unistd.h>
 #include "PuzzleGame.hh"
 #include "PuzzleSprite.hh"
 
@@ -110,12 +111,12 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
       while (posXPic < (xPic * div))
 	{
 	  _window.Draw((*it)->getSprite());
-	  if ((*it)->getSprite()->getSelect() == true)
+	  if ((*it)->getSelect() == true)
 	    {
 	      if (_isTarget == true)
-		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + ypPic), sf::Color(0, 255, 255, 0), 3));
+		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 255, 0), 3));
 	      else
-		_window.Draw(sf::Shape::Rectangle());
+		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 0, 0), 3));
 	    }
 	  act++;
 	  posXPic += xPic;

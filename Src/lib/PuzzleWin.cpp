@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <unistd.h>
 #include "PuzzleGame.hh"
 #include "PuzzleWin.hh"
 
