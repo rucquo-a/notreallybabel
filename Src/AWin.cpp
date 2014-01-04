@@ -93,10 +93,9 @@ bool	AWin::gestEvent(sf::Event event)
       launchWindow();
       return (false);
     }  
-  getWindow().Clear();
-  drawContent();
-  getWindow().Display();
-  usleep(1000);
+  // getWindow().Clear();
+  //drawContent();
+  //getWindow().Display();
   return (true);
 }
 
@@ -132,7 +131,7 @@ void	AWin::drawTitle(std::string &title) const
   txt.SetPosition(250, 0);
   txt.SetText(title);
   _window.Draw(txt);
-  _window.Display();
+  //_window.Display();
 }
 
 void	AWin::setType(e_TYPE newType)

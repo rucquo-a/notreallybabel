@@ -263,14 +263,15 @@ void	PuzzleWin::mainDraw()
   std::list<sf::Sprite*>	spr;
 
   getWindow().Clear();
+  std::cout << "get PICTURE" << std::endl;
   if (getPicSet() == false)
     {
-      drawTitle(titlePic);
-      getWindow().Display();
+       drawTitle(titlePic);
+       getWindow().Display();
       setPicSet(true);
       loadPic(spr);
       getWindow().Display();
-      sleep(1);
+      std::cout << "get PICTURE" << std::endl;
       while (isIn == true)
 	{
 	  getWindow().GetEvent(event);
@@ -279,10 +280,12 @@ void	PuzzleWin::mainDraw()
 	  if (event.Type != 10 && last.Type == 10)
 	    isIn = gestMove(last);
 	  last = event;
+	  getWindow().Clear();
 	  drawTitle(titlePic);
+	  drawContent(/*spr*/);
 	  drawPic(spr);
 	  getWindow().Display();
-	  usleep(40000);
+	  usleep(2000);
 	}
 
     }
@@ -300,9 +303,11 @@ void	PuzzleWin::mainDraw()
 	  if (event.Type != 10 && last.Type == 10)
 	    isIn = gestMove(last);
 	  last = event;
+	  getWindow().Clear();
 	  drawTitle(titleDiff);
+	  drawContent();
 	  getWindow().Display();
-	  usleep(40000);
+	  usleep(2000);
 	}
       this->setType(GAME);  
     }
@@ -322,17 +327,14 @@ sf::Image&	PuzzleWin::getPic()
 }
 
 bool	PuzzleWin::isGood() const
-
 {
   return (_good);
 }
 
 extern "C"
 {
-
   AWin*	newWin(sf::RenderWindow& window)
   {
     return (new PuzzleWin(window));
   }
-
 }

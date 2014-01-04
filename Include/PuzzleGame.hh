@@ -12,10 +12,13 @@ class PuzzleGame
 {
   std::string	_picture;
   sf::RenderWindow	&_window;
-
+  
 public:
+  bool		_isTarget;
   PuzzleGame(sf::RenderWindow&);
   ~PuzzleGame();
+  
+  bool	isPicGood(std::list<PuzzleSprite*>&);
   void	mainGame(sf::Image&, std::string);
   void	initImg(std::list<PuzzleSprite*>&, int, sf::Image&);
   void	randImg(std::list<PuzzleSprite*>&);

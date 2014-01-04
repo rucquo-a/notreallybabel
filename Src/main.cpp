@@ -77,6 +77,7 @@ int	main()
   currentWin.setType(MENU);
   initMenu(window, currentWin);
   window.Display();
+  window.SetFramerateLimit(25);
   while (window.IsOpened())
     {
       window.GetEvent(event);

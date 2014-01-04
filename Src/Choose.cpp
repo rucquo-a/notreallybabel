@@ -130,14 +130,16 @@ void	Choose::mainDraw()
   loadLib();
   while (isIn == true)
     {
-      getWindow().GetEvent(event);
+      getWindow().GetEvent(event);      
       if (event.Type != 15 && event.Type != 10)
         isIn = gestEvent(event);
       if (event.Type != 10 && last.Type == 10)
 	{      
 	  isIn = gestEvent(last);
 	}
+      getWindow().Clear();
       drawTitle(title);
+      drawContent(/*getWindow()*/);
       getWindow().Display();
       last = event;
     }

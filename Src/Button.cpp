@@ -107,7 +107,7 @@ void	Button::DrawContent(sf::RenderWindow &in) const
 	if (this->getWin()->isGood() == true)
 	  {
 	    pic.SetPosition(_initX, _initY + 50);
-	    pic.SetImage(this->getWin()->getPic());
+0	    pic.SetImage(this->getWin()->getPic());
 	    pic.Resize(150, 150);
 	    in.Draw(pic);
 	  }

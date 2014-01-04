@@ -6,6 +6,7 @@
 
 PuzzleGame::PuzzleGame(sf::RenderWindow& window) : _window(window)
 {
+  _isTarget = false;
 }
 
 PuzzleGame::~PuzzleGame()
@@ -109,8 +110,14 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
       while (posXPic < (xPic * div))
 	{
 	  _window.Draw((*it)->getSprite());
+	  if ((*it)->getSprite()->getSelect() == true)
+	    {
+	      if (_isTarget == true)
+		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + ypPic), sf::Color(0, 255, 255, 0), 3));
+	      else
+		_window.Draw(sf::Shape::Rectangle());
+	    }
 	  act++;
-	  _window.Draw(sf::Shape::Rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 255, 255, 0), 3));
 	  posXPic += xPic;
 	  posX +=xPic;
 	  it++;
@@ -133,11 +140,11 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
   std::list<PuzzleSprite*>::iterator	it;
   std::list<PuzzleSprite*>::iterator	it2;
   int	need;
+  PuzzleSprite*	tmp;
 
   srand(time(NULL));
   
   need = spr.size() * 100;
-  std::cout << "need : " << need << std::endl;
   while (bcl < need)
     {
       it = spr.begin();
@@ -152,9 +159,30 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
       y2 = (*it2)->getSprite().GetPosition().y;
       (*it)->getSprite().SetPosition(x2, y2);
       (*it2)->getSprite().SetPosition(x, y);
+      tmp = (*it);      
+      (*it) = (*it2);
+      (*it2) = tmp;
       bcl++;
     }
 
+}
+
+bool	PuzzleGame::isPicGood(std::list<PuzzleSprite*>& spr)
+{
+  std::list<PuzzleSprite*>::iterator	it = spr.begin();
+  std::list<PuzzleSprite*>::iterator	itEnd = spr.end();
+  int		id;
+
+  id = -1;
+  while(it != itEnd && (id + 1) == (*it)->getId())
+    {
+      id = (*it)->getId();
+      it++;
+    }
+  if (it == itEnd)
+    return (true);
+  else
+    return (false);
 }
 
 void	PuzzleGame::mainGame(sf::Image& pic, std::string diff)
@@ -175,9 +203,11 @@ void	PuzzleGame::mainGame(sf::Image& pic, std::string diff)
   sleep(1);
   _window.Clear();
   _window.Display();
-  sleep(1);
   randImg(spr);
   _window.Clear();
   display(spr, div);
-  sleep(50);
+  while (isPicGood(spr) == false)
+    {
+      
+    }
 }
