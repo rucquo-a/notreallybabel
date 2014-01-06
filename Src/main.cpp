@@ -14,8 +14,8 @@ void	initMenu(sf::RenderWindow& win, AWin &current)
   Button	*chooseGame;
   Button	*leaveGame;
   
-  int	x2 = win.GetWidth() / 2;
-  int	y2 = win.GetHeight() / 2;
+  int	x2 = win.getSize().x / 2;
+  int	y2 = win.getSize().y / 2;
   chooseGame = new Button(x2 - 150, y2 - 50, x2 + 150, y2 + 50, "Choose Game");
   chooseGame->setWin(new Choose(win));
   chooseGame->setTarget(true);
@@ -36,18 +36,18 @@ void	gestEvent(sf::Event event, sf::RenderWindow& window, AWin &currentWin)
   int	mY;
   int	i;
 
-  if(event.Type == sf::Event::Closed)
-    window.Close();
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Escape)
-    window.Close();
-  if (event.Type == sf::Event::MouseButtonReleased)
+  if(event.type == sf::Event::Closed)
+    window.close();
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+    window.close();
+  if (event.type == sf::Event::MouseButtonReleased)
     {
 
       but = currentWin.getButton();
       it = but.begin();
       itEnd = but.end();
-      mX = event.MouseButton.X;
-      mY = event.MouseButton.Y;
+      mX = event.mouseButton.x;
+      mY = event.mouseButton.y;
       std::cout << mX <<"," << mY << std::endl;
       while (it != itEnd)
 	{
@@ -56,17 +56,17 @@ void	gestEvent(sf::Event event, sf::RenderWindow& window, AWin &currentWin)
 	  it++;
 	}
     }
-  if (event.Type == sf::Event::Resized)
+  if (event.type == sf::Event::Resized)
     currentWin.updateButton();
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Down)
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down)
     currentWin.upDown();
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Up)
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up)
     currentWin.upUp();
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Return)
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
     currentWin.launchWindow();
-  window.Clear();
+  window.clear();
   currentWin.drawContent();
-  window.Display();
+  window.display();
 }
 
 int	main()
@@ -78,18 +78,17 @@ int	main()
 
   currentWin.setType(MENU);
   initMenu(window, currentWin);
-  window.Display();
-  window.SetFramerateLimit(25);
-  while (window.IsOpened())
+  window.display();
+  while (window.isOpen())
     {
-      window.GetEvent(event);
+      window.pollEvent(event);
       gestEvent(event, window, currentWin); 
       usleep(40000);
-      window.Clear();
+      window.clear();
       if(currentWin.getButton().size() == 0)
 	initMenu(window, currentWin);	
       currentWin.drawContent();
-      window.Display();
+      window.display();
     }
   return (0);
 }

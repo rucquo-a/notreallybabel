@@ -12,6 +12,6 @@ Leave::~Leave()
 
 void	Leave::mainDraw()
 {
-  getWindow().Clear();
-  getWindow().Close();
+  getWindow().clear();
+  getWindow().close();
 }

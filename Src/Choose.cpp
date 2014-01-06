@@ -33,8 +33,8 @@ void	Choose::updateButton()
   button = getButton();
   it = button.begin();
   itEnd = button.end();
-  x = getWindow().GetWidth() / 4;
-  y = getWindow().GetHeight() / 2;
+  x = getWindow().getSize().x / 4;
+  y = getWindow().getSize().y / 2;
   y -= 100;
   while (it != itEnd)
     {
@@ -44,21 +44,21 @@ void	Choose::updateButton()
       (*it)->setPosU(_xPlace, _yPlace);
       it++;
       _xPlace += x + 50;
-      if (_xPlace >= getWindow().GetWidth())
+      if (_xPlace >= getWindow().getSize().x)
 	{
 	  _xPlace = 20;
 	  _yPlace += y + 150;
       	}
     }
   drawContent();
-  getWindow().Display();
+  getWindow().display();
 }
 
 void	Choose::createButton(AWin* window, std::string &name)
 {
   Button	*game;
-  int	x = getWindow().GetWidth() / 2;
-  int	y = getWindow().GetHeight() / 2;
+  int	x = getWindow().getSize().x / 2;
+  int	y = getWindow().getSize().y / 2;
 
   name.erase(name.size() - 3, name.size());
   game = new Button(_xPlace, _yPlace, _xPlace + 150, _yPlace + 205, name);
@@ -67,7 +67,7 @@ void	Choose::createButton(AWin* window, std::string &name)
   window->setType(GAME);
   game->DrawContent(getWindow());
   window->setType(GAME);
-  getWindow().Display();
+  getWindow().display();
   addButton(game);
   game->setWin(window);
   _xPlace += 200;
@@ -126,21 +126,19 @@ void	Choose::mainDraw()
   sf::Event	last;
 
   drawTitle(title);
-  getWindow().Display();
+  getWindow().display();
   loadLib();
   while (isIn == true)
     {
-      getWindow().GetEvent(event);      
-      if (event.Type != 15 && event.Type != 10)
+      getWindow().pollEvent(event);
+      if (event.type != 15 && event.type != 10)
         isIn = gestEvent(event);
-      if (event.Type != 10 && last.Type == 10)
+      if (event.type != 10 && last.type == 10)
 	{      
 	  isIn = gestEvent(last);
 	}
-      getWindow().Clear();
       drawTitle(title);
-      drawContent(/*getWindow()*/);
-      getWindow().Display();
+      getWindow().display();
       last = event;
     }
 }

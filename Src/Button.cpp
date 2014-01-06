@@ -82,7 +82,7 @@ AWin*	Button::getWin() const
 
 void	Button::DrawContent(sf::RenderWindow &in) const
 {
-  sf::String	txt;
+  sf::Text	txt;
   sf::Font	Acent;
   sf::Sprite	pic;
   int	x;
@@ -92,24 +92,24 @@ void	Button::DrawContent(sf::RenderWindow &in) const
 
   getPosU(x, y);
   getPosD(x2, y2);
-  x2 = in.GetWidth() / 4;
+  x2 = in.getSize().x / 4;
   //x2 -= 100;
-  Acent.LoadFromFile("./Ressources/Acens.ttf");
+  Acent.loadFromFile("./Ressources/Acens.ttf");
   if (_isTarget == true)
-    txt.SetColor(sf::Color(205, 225, 0));
-  txt.SetFont(Acent);
-  txt.SetText(this->getContent());
-  txt.SetPosition(_initX, _initY);
-  in.Draw(txt);
+    txt.setColor(sf::Color(205, 225, 0));
+  txt.setFont(Acent);
+  txt.setString(this->getContent());
+  txt.setPosition(_initX, _initY);
+  in.draw(txt);
   if (this->getWin() != NULL)
     if (this->getWin()->getType() == GAME)
       {
 	if (this->getWin()->isGood() == true)
 	  {
-	    pic.SetPosition(_initX, _initY + 50);
-	    pic.SetImage(this->getWin()->getPic());
-	    pic.Resize(150, 150);
-	    in.Draw(pic);
+	    pic.setPosition(_initX, _initY + 50);
+	    pic.setTexture(this->getWin()->getPic());
+	    pic.setScale(150, 150);
+	    in.draw(pic);
 	  }
       }
 }

@@ -10,7 +10,7 @@ PuzzleWin::PuzzleWin(sf::RenderWindow& window) : AWin(window)
 {
   _picture = "./Ressources/Game/Picture/PuzzleWin.jpg";
   _good = false;
-  _good = _pic.LoadFromFile(_picture); 
+  _good = _pic.loadFromFile(_picture); 
   _pictureSet = false;
   _diffSet = false;
 }
@@ -33,7 +33,7 @@ void	PuzzleWin::setPic(std::string pic)
 {
   _picturePuzz = pic;
   pic = "./Ressources/Game/Puzzle/Pic/" + pic;
-  _good = _pic.LoadFromFile(pic);
+  _good = _pic.loadFromFile(pic);
 }
 
 bool	PuzzleWin::getPicSet() const
@@ -49,8 +49,8 @@ bool	PuzzleWin::getDiffSet() const
 void	PuzzleWin::drawDiff()
 {
   Button*	diff;
-  int	x = getWindow().GetWidth();
-  int	y = getWindow().GetHeight();
+  int	x = getWindow().getSize().x;
+  int	y = getWindow().getSize().y;
 
   x /= 2;
   y /= 3;
@@ -69,7 +69,7 @@ void	PuzzleWin::drawDiff()
   y+= 150;
   diff->setWin(this);
   addButton(diff);
-  getWindow().Display();
+  getWindow().display();
 }
 
 void	PuzzleWin::setDiff(std::string diff)
@@ -157,12 +157,12 @@ void	PuzzleWin::loadPic(std::list<sf::Sprite*> &_spr)
   std::string	dos("./Ressources/Game/Puzzle/Pic/");
   std::string	name;
   std::string	fullName;
-  sf::Image*	pic;
+  sf::Texture*	pic;
   sf::Sprite*	spr;
   int	x = 25;
   int	y = 50;
-  int	litX = getWindow().GetWidth() / 4;
-  int	litY = getWindow().GetHeight() / 2;
+  int	litX = getWindow().getSize().x / 4;
+  int	litY = getWindow().getSize().y / 2;
   Button	*next;
 
   this->setType(GAME);
@@ -177,8 +177,8 @@ void	PuzzleWin::loadPic(std::list<sf::Sprite*> &_spr)
             if ((st.st_mode & S_IFDIR) == false)
               if (name.rfind('.') != std::string::npos && name.substr(name.rfind('.')).compare(".jpg") == 0)
 		{
-		  pic = new sf::Image;
-		  if (pic->LoadFromFile(fullName) == true)
+		  pic = new sf::Texture;
+		  if (pic->loadFromFile(fullName) == true)
 		    {
 		      next = new Button(x, y, x + 175, y + 175, name);
 		      if (x == 25 && y == 50)
@@ -191,13 +191,13 @@ void	PuzzleWin::loadPic(std::list<sf::Sprite*> &_spr)
 		      next->setWin(this);
 		      next->DrawContent(getWindow());
 		      spr = new sf::Sprite;
-		      spr->SetImage(*pic);
-		      spr->SetPosition(x, y+50);
-		      spr->Resize(150, 150);
-		      getWindow().Draw(*spr);
+		      spr->setTexture(*pic);
+		      spr->setPosition(x, y+50);
+		      spr->setScale(150, 150);
+		      getWindow().draw(*spr);
 		      _spr.push_front(spr);
 		      x += 150 + 50;
-		      if (x >= getWindow().GetWidth())
+		      if (x >= getWindow().getSize().x)
 			{
 			  x = 0;
 			  y += 300;
@@ -216,7 +216,7 @@ void	PuzzleWin::drawPic(std::list<sf::Sprite*>& spr)
 
   while (it != itEnd)
     {
-      getWindow().Draw(*(*it));
+      getWindow().draw(*(*it));
       it++;
     }
 }
@@ -263,52 +263,47 @@ void	PuzzleWin::mainDraw()
   bool		isIn = true;
   std::list<sf::Sprite*>	spr;
 
-  getWindow().Clear();
-  std::cout << "get PICTURE" << std::endl;
+  getWindow().clear();
   if (getPicSet() == false)
     {
-       drawTitle(titlePic);
-       getWindow().Display();
+      drawTitle(titlePic);
+      getWindow().display();
       setPicSet(true);
       loadPic(spr);
-      getWindow().Display();
-      std::cout << "get PICTURE" << std::endl;
+      getWindow().display();
+      sleep(1);
       while (isIn == true)
 	{
-	  getWindow().GetEvent(event);
-	  if (event.Type != 15 && event.Type != 10)
+	  getWindow().pollEvent(event);
+	  if (event.type != 15 && event.type != 10)
 	    isIn = gestEvent(event);
-	  if (event.Type != 10 && last.Type == 10)
+	  if (event.type != 10 && last.type == 10)
 	    isIn = gestMove(last);
 	  last = event;
-	  getWindow().Clear();
 	  drawTitle(titlePic);
-	  drawContent(/*spr*/);
 	  drawPic(spr);
-	  getWindow().Display();
-	  usleep(2000);
+	  getWindow().display();
+	  usleep(40000);
 	}
 
     }
   else if (getDiffSet() == false)
     {
       drawTitle(titleDiff);
-      getWindow().Display();
+      getWindow().display();
       drawDiff();
       setDiffSet(true);
       while (isIn == true)
 	{
-	  getWindow().GetEvent(event);
-	  if (event.Type != 15 && event.Type != 10)
+	  getWindow().pollEvent(event);
+	  if (event.type != 15 && event.type != 10)
 	    isIn = gestEvent(event);
-	  if (event.Type != 10 && last.Type == 10)
+	  if (event.type != 10 && last.type == 10)
 	    isIn = gestMove(last);
 	  last = event;
-	  getWindow().Clear();
 	  drawTitle(titleDiff);
-	  drawContent();
-	  getWindow().Display();
-	  usleep(2000);
+	  getWindow().display();
+	  usleep(40000);
 	}
       this->setType(GAME);  
     }
@@ -322,20 +317,23 @@ void	PuzzleWin::mainDraw()
     }
 }
 
-sf::Image&	PuzzleWin::getPic()
+sf::Texture&	PuzzleWin::getPic()
 {
   return (_pic);
 }
 
 bool	PuzzleWin::isGood() const
+
 {
   return (_good);
 }
 
 extern "C"
 {
+
   AWin*	newWin(sf::RenderWindow& window)
   {
     return (new PuzzleWin(window));
   }
+
 }
