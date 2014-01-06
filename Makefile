@@ -27,7 +27,7 @@ SRC_OBJ=	$(SRC_FILE:.cpp=.o)
 
 CPPFLAGS=	-I$(INC_DIR) -g
 
-LIBS=		-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lssl
+LIBS=		-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 NAME=		LeapArcade
 

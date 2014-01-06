@@ -10,9 +10,9 @@ class	PuzzleSprite
   int		_id;
   sf::Sprite	_pic;
   int		_pos;
+  bool		_isSelect;		
 
 public:
-  bool		_isSelect;
   PuzzleSprite(int, int);
   ~PuzzleSprite();
   void		setSelect(bool);

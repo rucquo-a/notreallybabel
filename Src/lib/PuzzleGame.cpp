@@ -1,50 +1,51 @@
 #include <list>
-#include <iterator>
-#include <stdlib.h>
 #include <unistd.h>
 #include "PuzzleGame.hh"
 #include "PuzzleSprite.hh"
 
 PuzzleGame::PuzzleGame(sf::RenderWindow& window) : _window(window)
 {
-  _isTarget = false;
 }
 
 PuzzleGame::~PuzzleGame()
 {
 }
 
-void	PuzzleGame::initImg(std::list<PuzzleSprite*>& spr, int div, sf::Image &pic)
+void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 {
   int	x = 0;
   int	y = 0;
+  int	div;
   int	posX = 0;
   int	posY = 0;
   int	posXPic = 0;
   int	posYPic = 0;
   int	xPic = 0;
   int	yPic = 0;
+  std::list<PuzzleSprite*>	spr;
   PuzzleSprite*	next;
   int	id = 0;
   std::list<PuzzleSprite*>::iterator	it;
   std::list<PuzzleSprite*>::iterator	itEnd;
-  int					need = 0;
-  int					act = 0;
-  
-  x = 800;
-  y = 600;
-  xPic = pic.GetWidth();
-  yPic = pic.GetHeight();
+
+
+  x = _window.getSize().x;
+  y = _window.getSize().y;
+  xPic = pic.getSize().x;
+  yPic = pic.getSize().y;
   xPic = x;
   yPic = y;
+  if (diff.compare("Easy") == 0)
+    div = 3;
+  if (diff.compare("Normal") == 0)
+    div = 4;
+  if (diff.compare("Hard") == 0)
+    div = 5;
   x /= div;
   y /= div;
   xPic /= div;
   yPic /= div;
-  _window.Clear();
-  need = div * div;
-  std::cout << "need : " << need << std::endl;
-  while (posYPic <= (yPic * div) && need > act)
+  while (posYPic <= (yPic * div))
     {
       posXPic = 0;
       posX = 0;
@@ -53,21 +54,11 @@ void	PuzzleGame::initImg(std::list<PuzzleSprite*>& spr, int div, sf::Image &pic)
 	  next = new PuzzleSprite(posX, posY);
 	  next->setId(id);
 	  id++;
-	  if (act < need - 1)
-	    {
-	      next->getSprite().SetImage(pic);
-	      next->getSprite().SetPosition(posX, posY);
-	      next->getSprite().SetSubRect(sf::IntRect(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic)));
-	    }
-	  else
-	    {
-	      next->getSprite().SetColor(sf::Color(0, 0, 0, 128));
-	      next->getSprite().SetPosition(posX, posY);
-	    }
-	  _window.Draw(next->getSprite());
-	  act++;
-	  _window.Draw(sf::Shape::Rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 255, 255, 0), 3));
-	  _window.Display();
+	  next->getSprite().setTexture(pic);
+	  next->getSprite().setPosition(posX, posY);
+	  //next->getSprite().Resize(800, 600);
+	  std::cout << "posX : " << posX << ", posY : " << posY << std::endl;
+	  next->getSprite().setTextureRect(sf::IntRect(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic)));
 	  posXPic += xPic;
 	  posX +=xPic;
 	  spr.push_back(next);
@@ -77,6 +68,7 @@ void	PuzzleGame::initImg(std::list<PuzzleSprite*>& spr, int div, sf::Image &pic)
     }
   it = spr.begin();
   itEnd = spr.end();
+<<<<<<< HEAD
   std::cout << "act : " << act << std::endl;
 }
 
@@ -186,38 +178,9 @@ bool	PuzzleGame::isPicGood(std::list<PuzzleSprite*>& spr)
   id = -1;
   while(it != itEnd && (id + 1) == (*it)->getId())
     {
-      id = (*it)->getId();
+      _window.draw((*it)->getSprite());
       it++;
     }
-  if (it == itEnd)
-    return (true);
-  else
-    return (false);
-}
-
-void	PuzzleGame::mainGame(sf::Image& pic, std::string diff)
-{
-  int	div;
-  std::list<PuzzleSprite*>	spr;
-
-  spr.clear();
-  if (diff.compare("Easy") == 0)
-    div = 3;
-  if (diff.compare("Normal") == 0)
-    div = 4;
-  if (diff.compare("Hard") == 0)
-    div = 5;
-  _window.Clear();
-  initImg(spr, div, pic);
-  _window.Display();
-  sleep(1);
-  _window.Clear();
-  _window.Display();
-  randImg(spr);
-  _window.Clear();
-  display(spr, div);
-  while (isPicGood(spr) == false)
-    {
-      
-    }
+  _window.display();
+  sleep(5);
 }

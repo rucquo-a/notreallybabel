@@ -11,7 +11,7 @@ class	PuzzleWin : public AWin
 {
   std::string	_picture;
   std::string	_picturePuzz;
-  sf::Image	_pic;
+  sf::Texture	_pic;
   bool		_good;
   bool		_pictureSet;
   bool		_diffSet;
@@ -31,7 +31,7 @@ public:
   void		setDiff(std::string);
   std::string&	getDiff();
   void		setPic(std::string);
-  sf::Image&	getPic();
+  sf::Texture&	getPic();
   bool	isGood() const;
   PuzzleWin(sf::RenderWindow&);
   virtual ~PuzzleWin();

@@ -26,7 +26,7 @@ public:
 
   virtual void			setType(e_TYPE);
   virtual bool			isGood()const {return (false);};
-  virtual sf::Image&		getPic() {};
+  virtual sf::Texture&		getPic() {};
   virtual e_TYPE		getType() const;
   virtual sf::RenderWindow&	getWindow() const;
   virtual void			drawTitle(std::string&) const;

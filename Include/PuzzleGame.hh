@@ -5,24 +5,17 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <list>
-#include "PuzzleSprite.hh"
 
 class PuzzleGame
 {
   std::string	_picture;
   sf::RenderWindow	&_window;
-  
+
 public:
-  bool		_isTarget;
   PuzzleGame(sf::RenderWindow&);
   ~PuzzleGame();
-  
-  bool	isPicGood(std::list<PuzzleSprite*>&);
-  void	mainGame(sf::Image&, std::string);
-  void	initImg(std::list<PuzzleSprite*>&, int, sf::Image&);
-  void	randImg(std::list<PuzzleSprite*>&);
-  void	display(std::list<PuzzleSprite*>&, int);
+  void	mainGame(sf::Texture&, std::string);
+
 
 };
 

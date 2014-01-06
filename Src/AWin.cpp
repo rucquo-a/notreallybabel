@@ -28,17 +28,17 @@ bool	AWin::gestEvent(sf::Event event)
   bool	newCur = false;
 
   but = getButton();
-  if(event.Type == sf::Event::Closed)
+  if(event.type == sf::Event::Closed)
     {
-      getWindow().Close();
+      getWindow().close();
       return (false);
     }
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Escape)
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     return (false);
-  if (event.Type == sf::Event::MouseMoved)
+  if (event.type == sf::Event::MouseMoved)
     {
-      mX = event.MouseMove.X;
-      mY = event.MouseMove.Y;
+      mX = event.mouseMove.x;
+      mY = event.mouseMove.y;
       it = but.begin();
       itEnd = but.end();
       while (it != itEnd && but.size() > 0)
@@ -59,14 +59,14 @@ bool	AWin::gestEvent(sf::Event event)
 	  it++;
 	}
     }
-  if (event.Type == sf::Event::MouseButtonReleased)
+  if (event.type == sf::Event::MouseButtonReleased)
     {
       it = but.begin();
       itEnd = but.end();
-      mX = event.MouseButton.X;
-      mY = event.MouseButton.Y;
+      mX = event.mouseButton.x;
+      mY = event.mouseButton.y;
       std::cout << mX <<"," << mY << std::endl;
-      std::cout << event.Type << std::endl;
+      std::cout << event.type << std::endl;
       while (it != itEnd &&but.size() > 0)
         {
           if ((*it)->isIn(mX, mY) == true)
@@ -83,20 +83,21 @@ bool	AWin::gestEvent(sf::Event event)
 	  it++;
         }
     }
-  if (event.Type == sf::Event::Resized)
+  if (event.type == sf::Event::Resized)
     updateButton();
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Down)
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down)
     upDown();
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Up)
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up)
     upUp();
-  if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Key::Return)
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
     {    
       launchWindow();
       return (false);
     }  
-  // getWindow().Clear();
-  //drawContent();
-  //getWindow().Display();
+  getWindow().clear();
+  drawContent();
+  getWindow().display();
+  usleep(1000);
   return (true);
 }
 
@@ -125,14 +126,14 @@ void	AWin::launchWindow()
 void	AWin::drawTitle(std::string &title) const
 {
   sf::Font      Acent;
-  sf::String	txt;
+  sf::Text	txt;
  
-  Acent.LoadFromFile("./Ressources/Acens.ttf");
-  txt.SetFont(Acent);
-  txt.SetPosition(250, 0);
-  txt.SetText(title);
-  _window.Draw(txt);
-  //_window.Display();
+  Acent.loadFromFile("./Ressources/Acens.ttf");
+  txt.setFont(Acent);
+  txt.setPosition(250, 0);
+  txt.setString(title);
+  _window.draw(txt);
+  _window.display();
 }
 
 void	AWin::setType(e_TYPE newType)
@@ -232,8 +233,8 @@ void	AWin::updateButton()
   button = getButton();
   it = button.begin();
   itEnd = button.end();
-  x = _window.GetWidth() / 2;
-  y = _window.GetHeight() / 2;
+  x = _window.getSize().x / 2;
+  y = _window.getSize().y / 2;
   while (it != itEnd)
     {
       (*it)->setPosU(x - 150, y - 50);
@@ -242,7 +243,7 @@ void	AWin::updateButton()
       it++;
     }
   drawContent();
-  _window.Display();
+  _window.display();
 }
 
 void	AWin::addButton(Button* next)
