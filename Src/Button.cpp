@@ -108,7 +108,7 @@ void	Button::DrawContent(sf::RenderWindow &in) const
 	  {
 	    pic.setPosition(_initX, _initY + 50);
 	    pic.setTexture(this->getWin()->getPic());
-	    pic.setScale(150, 150);
+	    pic.setScale(0.10f, 0.15f);
 	    in.draw(pic);
 	  }
       }

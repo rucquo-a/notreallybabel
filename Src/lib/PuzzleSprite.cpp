@@ -42,6 +42,11 @@ void	PuzzleSprite::setId(int id)
   _id = id;
 }
 
+int	PuzzleSprite::getId() const
+{
+  return (_id);
+}
+
 void	PuzzleSprite::setSprite(sf::Sprite& spr)
 {
   _pic = spr;

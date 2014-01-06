@@ -1,5 +1,6 @@
 #include <list>
 #include <unistd.h>
+#include <cmath>
 #include "PuzzleGame.hh"
 #include "PuzzleSprite.hh"
 
@@ -29,10 +30,10 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   std::list<PuzzleSprite*>::iterator	itEnd;
 
 
-  x = _window.getSize().x;
-  y = _window.getSize().y;
-  xPic = pic.getSize().x;
-  yPic = pic.getSize().y;
+  x = 800;
+  y = 600;
+  xPic = 800;
+  yPic = 600;
   xPic = x;
   yPic = y;
   if (diff.compare("Easy") == 0)
@@ -54,22 +55,28 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 	  next = new PuzzleSprite(posX, posY);
 	  next->setId(id);
 	  id++;
-	  next->getSprite().setTexture(pic);
+	  if (id < div * div)
+	    next->getSprite().setTexture(pic);
+	  else
+	    next->getSprite().setColor(sf::Color::Black);
 	  next->getSprite().setPosition(posX, posY);
-	  //next->getSprite().Resize(800, 600);
-	  std::cout << "posX : " << posX << ", posY : " << posY << std::endl;
-	  next->getSprite().setTextureRect(sf::IntRect(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic)));
+	  next->getSprite().setTextureRect(sf::IntRect(posXPic, posYPic, (xPic), ( yPic)));
 	  posXPic += xPic;
 	  posX +=xPic;
 	  spr.push_back(next);
 	}
       posY += y;
+      posXPic = 0;
       posYPic += yPic;
     }
   it = spr.begin();
   itEnd = spr.end();
-<<<<<<< HEAD
-  std::cout << "act : " << act << std::endl;
+  _window.clear();
+  _window.clear();
+  randImg(spr);
+  display(spr, div);
+  _window.display();
+  sleep(50);
 }
 
 
@@ -94,7 +101,7 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
   xPic /= div;
   yPic /= div;
   it = spr.begin();
-  _window.Clear();
+  _window.clear();
   need = div * div;
   while (posYPic <= (yPic * div) && need > act)
     {
@@ -105,16 +112,16 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
 	  if ((*it)->getSelect() == true)
 	    {
 	      if (_isTarget == true)
-		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 255, 1), 3));
+		;//_window.draw(sf::RectangleShape(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 255, 1), 3));
 	      else
 		{
-		  _window.Draw(sf::Shape::Rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 0, 255, 10), 10));
+		  //  _window.draw(sf::Shape::rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 0, 255, 10), 10));
 		}
 	    }
 	  //_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 255, 0, 255), 10));
-	  _window.Draw((*it)->getSprite());
-	  _window.Display();
-	  sleep(1);
+	  _window.draw((*it)->getSprite());
+	  _window.display();
+	  //sleep(1);
 	  act++;
 	  posXPic += xPic;
 	  posX +=xPic;
@@ -123,7 +130,6 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
       posY += y;
       posYPic += yPic;
     }
-  _window.Display();
 }
 
 void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
@@ -140,29 +146,40 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
   int	need;
   int	div;
   PuzzleSprite*	tmp;
+  int	idTmp;
+  bool	in = false;
 
   srand(time(NULL));
   
   div = spr.size();
   div = powf((float)(div), 0.5);
   need = spr.size() * 100;
+  std::cout << "div :" << div << std::endl;
   while (bcl < need)
     {
       it = spr.begin();
       it2 = spr.begin();
-      rd = rand() % spr.size();
-      rd2 = rand() % spr.size();
+      while (in == false)
+	{
+	  std::cout << "rd:" << rd << ", rd 2 " << rd2 << std::endl;
+	  rd = rand() % (div * div);
+	  rd2 = rand() % (div * div);
+	  if (rd < (div*div) && rd2 < (div*div))
+	    in = true;
+	}
+      std::cout << "out" << std::endl;
+      in = false;
       std::advance(it, rd);
       std::advance(it2, rd2);
-      x = (*it)->getSprite().GetPosition().x;
-      y = (*it)->getSprite().GetPosition().y;
-      x2 = (*it2)->getSprite().GetPosition().x;
-      y2 = (*it2)->getSprite().GetPosition().y;
-      (*it)->getSprite().SetPosition(x2, y2);
-      (*it2)->getSprite().SetPosition(x, y);
-      tmp = (*it);      
-      (*it) = (*it2);
-      (*it2) = tmp;
+      x = (*it)->getSprite().getPosition().x;
+      y = (*it)->getSprite().getPosition().y;
+      x2 = (*it2)->getSprite().getPosition().x;
+      y2 = (*it2)->getSprite().getPosition().y;
+      (*it)->getSprite().setPosition(x2, y2);
+      (*it2)->getSprite().setPosition(x, y);
+      idTmp = (*it)->getId();
+      (*it)->setId((*it2)->getId());
+      (*it2)->setId(idTmp);
       bcl++;
     }
   it = spr.begin();

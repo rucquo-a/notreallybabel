@@ -25,9 +25,9 @@ DYN_OBJ=	$(DYN_SRC_FIN:.cpp=.o)
 
 SRC_OBJ=	$(SRC_FILE:.cpp=.o)
 
-CPPFLAGS=	-I$(INC_DIR) -g
+CPPFLAGS=	 -I$(INC_DIR) -g
 
-LIBS=		-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+LIBS=		-L./home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm
 
 NAME=		LeapArcade
 
@@ -39,13 +39,13 @@ all:		lib $(NAME)
 
 
 $(NAME):	$(SRC_OBJ)
-		g++ -o $@ $(SRC_OBJ) $(LIBS)
+		g++ -o $@ $(SRC_OBJ) -L /home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm
 
 lib:		$(DYN_OBJ)
 	g++ -shared -o $(NAME_DYN) $(DYN_OBJ)
 
 %.o:            %.cpp
-	g++ -fPIC -o $@ -c $< $(CPPFLAGS)
+	g++ -fPIC -o $@ -c $< $(CPPFLAGS) -I /home/grocko_t/SFML-2.0/include
 
 clean:
 	rm -f $(SRC_OBJ) $(DYN_OBJ)

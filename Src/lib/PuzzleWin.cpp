@@ -193,7 +193,7 @@ void	PuzzleWin::loadPic(std::list<sf::Sprite*> &_spr)
 		      spr = new sf::Sprite;
 		      spr->setTexture(*pic);
 		      spr->setPosition(x, y+50);
-		      spr->setScale(150, 150);
+		      spr->setScale(0.2f, 0.25f);
 		      getWindow().draw(*spr);
 		      _spr.push_front(spr);
 		      x += 150 + 50;
