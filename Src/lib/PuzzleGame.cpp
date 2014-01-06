@@ -110,14 +110,19 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
       posX = 0;
       while (posXPic < (xPic * div))
 	{
-	  _window.Draw((*it)->getSprite());
 	  if ((*it)->getSelect() == true)
 	    {
 	      if (_isTarget == true)
-		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 255, 0), 3));
+		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 255, 1), 3));
 	      else
-		_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 0, 0), 3));
+		{
+		  _window.Draw(sf::Shape::Rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 0, 255, 10), 10));
+		}
 	    }
+	  //_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 255, 0, 255), 10));
+	  _window.Draw((*it)->getSprite());
+	  _window.Display();
+	  sleep(1);
 	  act++;
 	  posXPic += xPic;
 	  posX +=xPic;
@@ -141,10 +146,13 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
   std::list<PuzzleSprite*>::iterator	it;
   std::list<PuzzleSprite*>::iterator	it2;
   int	need;
+  int	div;
   PuzzleSprite*	tmp;
 
   srand(time(NULL));
   
+  div = spr.size();
+  div = powf((float)(div), 0.5);
   need = spr.size() * 100;
   while (bcl < need)
     {
@@ -165,7 +173,8 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
       (*it2) = tmp;
       bcl++;
     }
-
+  it = spr.begin();
+  (*it)->setSelect(true);
 }
 
 bool	PuzzleGame::isPicGood(std::list<PuzzleSprite*>& spr)
