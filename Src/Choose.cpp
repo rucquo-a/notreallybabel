@@ -59,17 +59,23 @@ void	Choose::createButton(AWin* window, std::string &name)
   Button	*game;
   int	x = getWindow().getSize().x / 2;
   int	y = getWindow().getSize().y / 2;
+  sf::Sprite	sp;
 
   name.erase(name.size() - 3, name.size());
   game = new Button(_xPlace, _yPlace, _xPlace + 150, _yPlace + 205, name);
   if (_xPlace == 20 && _yPlace == 50)
     game->setTarget(true);
   window->setType(GAME);
-  game->DrawContent(getWindow());
+  //game->setWin(window);
   window->setType(GAME);
+  game->DrawContent(getWindow());
+  sp.setPosition(0, 0);
+  sp.setTexture(window->getPic());
+  sp.setScale(0.10f, 0.15f);
+  getWindow().draw(sp);
   getWindow().display();
   addButton(game);
-  game->setWin(window);
+    game->setWin(window);
   _xPlace += 200;
   if (_xPlace >= 800)
     {

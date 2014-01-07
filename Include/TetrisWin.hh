@@ -14,6 +14,7 @@ class	TetrisWin : public AWin
 public:
   bool	isGood() const;
   TetrisWin(sf::RenderWindow&);
+  sf::Texture&	getPic();
   virtual ~TetrisWin();
   virtual void	mainDraw();
 };

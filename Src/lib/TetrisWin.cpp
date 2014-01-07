@@ -5,7 +5,7 @@
 
 TetrisWin::TetrisWin(sf::RenderWindow& window) : AWin(window)
 {
-  _picture = "./Ressources/Game/Picture/TetrisWin.jpg";
+  _picture = "./Ressources/Game/Picture/TetrisGame.jpg";
   _good = false;
   _good = _pic.loadFromFile(_picture);
 }
@@ -21,6 +21,11 @@ void	TetrisWin::mainDraw()
   getWindow().clear();
   game = new TetrisGame(getWindow());
   game->mainGame();
+}
+
+sf::Texture&	TetrisWin::getPic()
+{
+  return (_pic);
 }
 
 bool	TetrisWin::isGood() const
