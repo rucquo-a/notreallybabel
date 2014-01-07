@@ -32,15 +32,6 @@ void	PuzzleGame::upUp(std::list<PuzzleSprite*>& spr)
   div = powf(spr.size(), 0.5);
   it = spr.begin();
   itEnd = spr.end();
-  std::cout << "during mve" << std::endl;
-  while (it != itEnd)
-    {
-      if ((*it)->getSprite().getColor() == sf::Color::Black)
-	std::cout << "Blacky found" << std::endl;
-      std::cout << "id is : " << (*it)->getId() << std::endl;
-      it++;
-    }
-  it = spr.begin();
   if (_isTarget == false)
     while (it != itEnd && nott == true)
       {
@@ -438,6 +429,7 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 	{
 	  next = new PuzzleSprite(posX, posY);
 	  next->setId(id);
+	  next->_idPos = id;
 	  id++;
 	  if (id < div * div)
 	    next->getSprite().setTexture(pic);
@@ -620,8 +612,26 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
   div = spr.size();
   div = powf((float)(div), 0.5);
   need = spr.size() * 100;
+  it = spr.end();
+  it--;
   while (bcl < need)
     {
+      rd = rand() % 4;
+      if (rd == 0)
+	{
+	}
+      if (rd == 1)
+	{
+	}
+      if (rd == 2)
+	{
+	}
+      if (rd == 3)
+	{
+	}
+      
+      
+      
       it = spr.begin();
       it2 = spr.begin();
       while (in == false)
@@ -643,9 +653,6 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
       idTmp = (*it)->getId();
       (*it)->setId((*it2)->getId());      
       (*it2)->setId(idTmp);
-      //tmp = (*it);
-      //(*it) = (*it2);
-      //(*it) = (tmp);
       bcl++;
     }
   it = spr.begin();
@@ -660,7 +667,7 @@ bool	PuzzleGame::isPicGood(std::list<PuzzleSprite*>& spr)
   int		id;
 
   id = -1;
-  while(it != itEnd && (id + 1) == (*it)->getId())
+  while(it != itEnd && (id + 1) == (*it)->_idPos)
     {
       _window.draw((*it)->getSprite());
       it++;

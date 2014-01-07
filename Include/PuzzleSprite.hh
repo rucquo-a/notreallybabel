@@ -13,6 +13,9 @@ class	PuzzleSprite
   bool		_isSelect;		
 
 public:
+  int	_idPos;
+
+public:
   PuzzleSprite(int, int);
   ~PuzzleSprite();
   void		setSelect(bool);
