@@ -233,7 +233,7 @@ void	PuzzleGame::upRight(std::list<PuzzleSprite*>& spr)
 	      while (i > 0)
 		{
 		  itNeed++;
-		  if (itNeed == spr.begin())
+		  if (itNeed == spr.begin() || itNeed == spr.end())
 		    {
 		      _error = true;
 		      i = 0;
@@ -300,6 +300,8 @@ void	PuzzleGame::upDown(std::list<PuzzleSprite*>& spr)
 		itNeed++;
 		i--;
 	      }
+	    if (itNeed == spr.end())
+	      itNeed = spr.begin();
 	    (*itNeed)->setSelect(true);
 	  }
 	it++;
@@ -385,6 +387,67 @@ bool	PuzzleGame::gestEvent(sf::Event& event, std::list<PuzzleSprite*>& spr)
   return (true);
 }
 
+void	PuzzleGame::gestLeap(Leap::FingerList& fing, Leap::FingerList& lastFing, std::list<PuzzleSprite*>& spr)
+{
+  Leap::FingerList::const_iterator fl = fing.begin();
+  Leap::FingerList::const_iterator fl2 = fing.begin();
+  Leap::FingerList::const_iterator flEnd = fing.end();
+  Leap::FingerList::const_iterator fl3 = lastFing.begin();
+  Leap::Vector	vect;
+  float	y;
+  float	dist;
+  float	x;
+
+  fl2++;
+  dist = ((*fl).tipPosition()).distanceTo((*fl2).tipPosition());
+  if (dist < 30.0f)
+    {    
+      if (_isTarget == false)
+	{
+	  _isTarget = true;
+	  _diff = true;
+	}
+    }
+  else
+    {
+      if (_isTarget == true)
+	{
+	  _diff = true;
+	  _isTarget = false;
+	}
+    }
+  std::cout << "size last : " << lastFing.count() << std::endl;
+  if (lastFing.count() == 2)
+    {
+      vect = (*fl).tipPosition() - (*fl3).tipPosition();
+      y = vect[1];
+      std::cout << "y : " << y << std::endl;
+      if (y > 2)
+	{
+	  _diff = true;
+	  upUp(spr);
+	}
+      else if (y < -2)
+	{
+	  _diff = true;
+	  upDown(spr);
+	}
+      x = vect[0];
+      std::cout << "y : " << y << std::endl;
+      if (x > 2)
+	{
+	  _diff = true;
+	  upRight(spr);
+	}
+      else if (x < -2)
+	{
+	  _diff = true;
+	  upLeft(spr);
+	}
+    }
+  usleep(100000);
+}
+
 void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 {
   int	x = 0;
@@ -408,17 +471,16 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   int	actIn = 0;
   Leap::Controller	ctrl;
   Leap::Listener                lsnr;
-  //Leap::Frame                   fram;
-  //Leap::Frame                   lastFram;
-  //Leap::Gesture			gest;
+  Leap::Frame                   fram;
+  Leap::Frame                   lastFram;
+  Leap::GestureList			gest;
   
   ctrl.addListener(lsnr);
-  /*  ctrl.enableGesture(Leap::Gesture::TYPE_CIRCLE);
+  ctrl.enableGesture(Leap::Gesture::TYPE_CIRCLE);
   ctrl.enableGesture(Leap::Gesture::TYPE_KEY_TAP);
   ctrl.enableGesture(Leap::Gesture::TYPE_SCREEN_TAP);
   ctrl.enableGesture(Leap::Gesture::TYPE_SWIPE);
-  */
-
+  
   x = 800;
   y = 600;
   xPic = 800;
@@ -474,49 +536,31 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   it = spr.begin();
   itEnd = spr.end();
   act = 0;
-  /*if (ctrl.isConnected())
+  if (ctrl.isConnected())
     {
       std::cout << "coucou" << std::endl;
-      //Leap::Frame	frame = ctrl.frame();
-      //Leap::Frame	lastFrame = ctrl.frame();
-      //Leap::Gesture/*List*//*	gest;
+      Leap::Frame	frame = ctrl.frame();
+      Leap::Frame	lastFrame = ctrl.frame();
     }
   else
-  std::cout << "fuck you!" << std::endl;*/
-  //frame = ctrl.frame();
-  //lastFrame = frame;
+    std::cout << "fuck you!" << std::endl;
+  Leap::Frame frame = ctrl.frame();
+  Leap::Frame lastFrame = ctrl.frame(10);
+  Leap::FingerList	fing = frame.fingers();
+  Leap::FingerList	lastFing = lastFrame.fingers();
   while(isPicGood(spr) == false && isIn == true)
     {
-      /*  if (ctrl.isConnected())
-	{
-	  frame = ctrl.frame();
-	  gest = frame.gestures(lastFrame);
-	  // if (gest.isValid())
-	  //{
-	  for(Leap::GestureList::const_iterator gl = frame.gestures().begin(); gl != frame.gestures().end();)
-	    {
-	      switch ((*gl).type()) {
-	      case Leap::Gesture::TYPE_CIRCLE:
-		std::cout << "circle" << std::endl;
-		break;
-	      case Leap::Gesture::TYPE_KEY_TAP:
-		std::cout << "tap" << std::endl;
-		break;
-	      case Leap::Gesture::TYPE_SCREEN_TAP:
-		std::cout << "type" << std::endl;
-		break;
-	      case Leap::Gesture::TYPE_SWIPE:
-		std::cout << "swap" << std::endl;
-		break;
-	      default:
-		std::cout << "defautl" << std::endl;
-		break;
-	      }
-	    }
-	  //}
-	  }*/
-      _window.pollEvent(event);
       _diff = false;
+      frame = ctrl.frame();
+      fing = frame.fingers();
+      lastFrame = ctrl.frame(1);
+      lastFing = lastFrame.fingers();
+      Leap::GestureList gest = frame.gestures();
+      if (fing.count() == 2)
+	{
+	  gestLeap(fing, lastFing, spr);
+	}
+      _window.pollEvent(event);
       if(last.key.code != event.key.code)
 	{
 	  if (event.type != 15 && event.type != 10)
@@ -539,9 +583,8 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 	}
       last = event;
       usleep(15000);
-      //lastFrame = frame;
-}
-_window.clear();
+    }
+  _window.clear();
   _window.display();
 }
 

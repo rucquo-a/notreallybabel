@@ -7,7 +7,7 @@
 #include	"Choose.hh"
 #include	"Leave.hh"
 #include	"Win.hh"
-
+#include "Leap.h"
 
 void	initMenu(sf::RenderWindow& win, AWin &current)
 {
@@ -74,7 +74,6 @@ int	main()
   sf::RenderWindow window(sf::VideoMode(800, 600, 32), "ArcadeLeap");
   sf::Event	event;
   Win		currentWin(window);
-
 
   currentWin.setType(MENU);
   initMenu(window, currentWin);

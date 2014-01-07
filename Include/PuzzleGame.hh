@@ -21,6 +21,7 @@ class PuzzleGame
 public:
   PuzzleGame(sf::RenderWindow&);
   ~PuzzleGame();
+  void	gestLeap(Leap::FingerList&, Leap::FingerList&, std::list<PuzzleSprite*>&);
   bool	gestEvent(sf::Event&, std::list<PuzzleSprite*>&);
   void	upUp( std::list<PuzzleSprite*>&);
   void	upRight( std::list<PuzzleSprite*>&);

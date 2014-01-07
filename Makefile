@@ -38,7 +38,7 @@ SRC_OBJ=	$(SRC_FILE:.cpp=.o)
 
 CPPFLAGS=	 -I$(INC_DIR) -g
 
-LIBS=		-L./home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm
+LIBS=		-L./home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm -I ./leap/include -L ./leap -lLeap
 
 NAME=		LeapArcade
 
@@ -51,14 +51,14 @@ all:		lib $(NAME)
 
 
 $(NAME):	$(SRC_OBJ)
-		g++ -o $@ $(SRC_OBJ) -L /home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm -I ./leap/include -L ./leap/libLeap.so
+		g++ -o $@ $(SRC_OBJ) -L /home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm -I ./leap/include -L ./leap -lLeap
 
 lib:		$(DYN_OBJ) $(DYN2_OBJ)
-		g++ -shared -o $(NAME_DYN) $(DYN_OBJ)
-		g++ -shared -o $(NAME_DYN2) $(DYN2_OBJ)
+		g++ -shared -o $(NAME_DYN) $(DYN_OBJ) -I ./leap/include -L ./leap -lLeap
+		g++ -shared -o $(NAME_DYN2) $(DYN2_OBJ) -I ./leap/include -L ./leap -lLeap
 
 %.o:            %.cpp
-	g++ -fPIC -o $@ -c $< $(CPPFLAGS) -I /home/grocko_t/SFML-2.0/include -I ./leap/include -L ./leap/libLeap.so
+	g++ -fPIC -o $@ -c $< $(CPPFLAGS) -I /home/grocko_t/SFML-2.0/include -I ./leap/include -L ./leap -lLeap
 
 clean:
 	rm -f $(SRC_OBJ) $(DYN_OBJ) $(DYN2_OBJ)
