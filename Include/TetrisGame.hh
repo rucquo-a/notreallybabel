@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Audio/Music.hpp>
 #include <iostream>
 #include "TetrisPart.hh"
 #include "TetrisMap.hh"

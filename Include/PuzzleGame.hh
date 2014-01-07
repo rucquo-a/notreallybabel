@@ -8,6 +8,7 @@
 #include <iostream>
 #include <list>
 #include "PuzzleSprite.hh"
+#include "Leap.h"
 
 bool    compare_id(const PuzzleSprite*, const PuzzleSprite*);
 
