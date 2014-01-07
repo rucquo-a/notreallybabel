@@ -1,6 +1,8 @@
 #include <list>
 #include <unistd.h>
 #include <cmath>
+#include "Leap.h"
+#include "LeapMath.h"
 #include "PuzzleGame.hh"
 #include "PuzzleSprite.hh"
 
@@ -404,6 +406,18 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   bool	isIn = true;
   int	act = 0;
   int	actIn = 0;
+  Leap::Controller	ctrl;
+  Leap::Listener                lsnr;
+  Leap::Frame                   fram;
+  Leap::Frame                   lastFram;
+  //Leap::Gesture			gest;
+
+  ctrl.addListener(lsnr);
+  ctrl.enableGesture(Leap::Gesture::TYPE_CIRCLE);
+  ctrl.enableGesture(Leap::Gesture::TYPE_KEY_TAP);
+  ctrl.enableGesture(Leap::Gesture::TYPE_SCREEN_TAP);
+  ctrl.enableGesture(Leap::Gesture::TYPE_SWIPE);
+
 
   x = 800;
   y = 600;
@@ -460,19 +474,52 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   it = spr.begin();
   itEnd = spr.end();
   act = 0;
+  Leap::Frame	frame;
+  Leap::Frame	lastFrame;
+  Leap::GestureList	gest;
+  frame = ctrl.frame();
+  lastFrame = frame;
   while(isPicGood(spr) == false && isIn == true)
     {
+      if (ctrl.isConnected())
+	{
+	  frame = ctrl.frame();
+	  gest = frame.gestures(lastFrame);
+	  // if (gest.isValid())
+	  //{
+	  for(Leap::GestureList::const_iterator gl = frame.gestures().begin(); gl != frame.gestures().end();)
+	    {
+	      switch ((*gl).type()) {
+	      case Leap::Gesture::TYPE_CIRCLE:
+		std::cout << "circle" << std::endl;
+		break;
+	      case Leap::Gesture::TYPE_KEY_TAP:
+		std::cout << "tap" << std::endl;
+		break;
+	      case Leap::Gesture::TYPE_SCREEN_TAP:
+		std::cout << "type" << std::endl;
+		break;
+	      case Leap::Gesture::TYPE_SWIPE:
+		std::cout << "swap" << std::endl;
+		break;
+	      default:
+		std::cout << "defautl" << std::endl;
+		break;
+	      }
+	    }
+	  //}
+	}
       _window.pollEvent(event);
       _diff = false;
       if(last.key.code != event.key.code)
-      {
+	{
 	  if (event.type != 15 && event.type != 10)
 	    isIn = gestEvent(event, spr);
 	  if (event.type != 10 && last.type == 10)
 	    {
 	      isIn = gestEvent(last, spr);
 	    }
-      }
+	}
       if (event.type == sf::Event::Closed)
 	{
 	  _window.close();
@@ -486,6 +533,7 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 	}
       last = event;
       usleep(15000);
+      lastFrame = frame;
     }
   _window.clear();
   _window.display();

@@ -51,14 +51,14 @@ all:		lib $(NAME)
 
 
 $(NAME):	$(SRC_OBJ)
-		g++ -o $@ $(SRC_OBJ) -L /home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm
+		g++ -o $@ $(SRC_OBJ) -L /home/grocko_t/SFML-2.0/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lm -I ./leap/include -L ./leap/libLeap.so
 
 lib:		$(DYN_OBJ) $(DYN2_OBJ)
 		g++ -shared -o $(NAME_DYN) $(DYN_OBJ)
 		g++ -shared -o $(NAME_DYN2) $(DYN2_OBJ)
 
 %.o:            %.cpp
-	g++ -fPIC -o $@ -c $< $(CPPFLAGS) -I /home/grocko_t/SFML-2.0/include
+	g++ -fPIC -o $@ -c $< $(CPPFLAGS) -I /home/grocko_t/SFML-2.0/include -I ./leap/include -L ./leap/libLeap.so
 
 clean:
 	rm -f $(SRC_OBJ) $(DYN_OBJ) $(DYN2_OBJ)
