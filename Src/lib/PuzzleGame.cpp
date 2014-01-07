@@ -6,10 +6,390 @@
 
 PuzzleGame::PuzzleGame(sf::RenderWindow& window) : _window(window)
 {
+  _isTarget = false;
+  _diff = false;
 }
 
 PuzzleGame::~PuzzleGame()
 {
+}
+
+void	PuzzleGame::upUp(std::list<PuzzleSprite*>& spr)
+{
+  std::list<PuzzleSprite*>::iterator	it;
+  std::list<PuzzleSprite*>::iterator	itEnd;
+  std::list<PuzzleSprite*>::iterator	itNeed;
+  int	div;
+  bool	nott = true;
+  int	i= 0;
+  bool	_error = false;
+  int	x;
+  int	y;
+  int	x2;
+  int	y2;
+  int	idTmp;
+
+  div = powf(spr.size(), 0.5);
+  it = spr.begin();
+  itEnd = spr.end();
+  std::cout << "during mve" << std::endl;
+  while (it != itEnd)
+    {
+      if ((*it)->getSprite().getColor() == sf::Color::Black)
+	std::cout << "Blacky found" << std::endl;
+      std::cout << "id is : " << (*it)->getId() << std::endl;
+      it++;
+    }
+  it = spr.begin();
+  if (_isTarget == false)
+    while (it != itEnd && nott == true)
+      {
+	if ((*it)->getSelect() == true)
+	  {
+	    nott = false;
+	    (*it)->getId();
+	    (*it)->setSelect(false);
+	    itNeed = it;
+	    i = div;
+	    while (i > 0)
+	      {
+		if (itNeed == spr.begin())
+		  itNeed = itEnd;
+		itNeed--;
+		i--;
+	      }
+	    (*itNeed)->setSelect(true);
+	  }
+	it++;
+      }
+  else
+    {
+      while (it != itEnd && nott == true)
+	{
+	  if ((*it)->getSelect() == true)
+	    {
+	      (*it)->getId();
+	      itNeed = it;
+	      i = div;
+	      while (i > 0)
+		{
+		  if (itNeed == spr.begin())
+		    {
+		      _error = true;
+		      i = 0;
+		    }
+		  itNeed--;
+		  i--;
+		}
+	      if (_error == false)
+		{
+		  if ((*itNeed)->getSprite().getColor() == sf::Color::Black || (*it)->getSprite().getColor() == sf::Color::Black)
+		    {
+		      x = (*it)->getSprite().getPosition().x;
+		      y = (*it)->getSprite().getPosition().y;
+		      x2 = (*itNeed)->getSprite().getPosition().x;
+		      y2 = (*itNeed)->getSprite().getPosition().y;
+		      (*it)->getSprite().setPosition(x2, y2);
+		      (*itNeed)->getSprite().setPosition(x, y);
+		      idTmp = (*it)->getId();
+		      (*it)->setId((*itNeed)->getId());
+		      (*itNeed)->setId(idTmp);
+		    }
+		}
+	      nott = false;
+	    }
+	  it++;
+	}
+    }
+  std::cout << "end" << std::endl;
+}
+
+void	PuzzleGame::upLeft(std::list<PuzzleSprite*>& spr)
+{
+  std::list<PuzzleSprite*>::iterator	it;
+  std::list<PuzzleSprite*>::iterator	itEnd;
+  std::list<PuzzleSprite*>::iterator	itNeed;
+  int	div;
+  bool	nott = true;
+  int	i= 0;
+  bool	_error = false;
+  int	x;
+  int	y;
+  int	x2;
+  int	y2;
+  int	idTmp;
+
+  div = powf(spr.size(), 0.5);
+  it = spr.begin();
+  itEnd = spr.end();
+  if (_isTarget == false)
+    while (it != itEnd && nott == true)
+      {
+	if ((*it)->getSelect() == true)
+	  {
+	    nott = false;
+	    (*it)->getId();
+	    (*it)->setSelect(false);
+	    itNeed = it;
+	    i = 1;
+	    while (i > 0)
+	      {
+		if (itNeed == spr.begin())
+		  itNeed = itEnd;
+		itNeed--;
+		i--;
+	      }
+	    (*itNeed)->setSelect(true);
+	  }
+	it++;
+      }
+  else
+    {
+      while (it != itEnd && nott == true)
+	{
+	  if ((*it)->getSelect() == true)
+	    {
+	      (*it)->getId();
+	      itNeed = it;
+	      i = 1;
+	      while (i > 0)
+		{
+		  if (itNeed == spr.begin())
+		    {
+		      _error = true;
+		      i = 0;
+		    }
+		  itNeed--;
+		  i--;
+		}
+	      if (_error == true)
+		std::cout << "error" << std::endl;
+	      if (_error == false)
+		{
+		  if ((*itNeed)->getSprite().getColor() == sf::Color::Black || (*it)->getSprite().getColor() == sf::Color::Black)
+		    {
+		      x = (*it)->getSprite().getPosition().x;
+		      y = (*it)->getSprite().getPosition().y;
+		      x2 = (*itNeed)->getSprite().getPosition().x;
+		      y2 = (*itNeed)->getSprite().getPosition().y;
+		      (*it)->getSprite().setPosition(x2, y2);
+		      (*itNeed)->getSprite().setPosition(x, y);
+		      idTmp = (*it)->getId();
+		      (*it)->setId((*itNeed)->getId());
+		      (*itNeed)->setId(idTmp);
+		    }
+		}
+	      nott = false;
+	    }
+	  it++;
+	}
+    }
+
+}
+
+void	PuzzleGame::upRight(std::list<PuzzleSprite*>& spr)
+{
+  std::list<PuzzleSprite*>::iterator	it;
+  std::list<PuzzleSprite*>::iterator	itEnd;
+  std::list<PuzzleSprite*>::iterator	itNeed;
+  int	div;
+  bool	nott = true;
+  int	i= 0;
+  bool	_error = false;
+  int	x;
+  int	y;
+  int	x2;
+  int	y2;
+  int	idTmp;
+
+  div = powf(spr.size(), 0.5);
+  it = spr.begin();
+  itEnd = spr.end();
+  if (_isTarget == false)
+    while (it != itEnd && nott == true)
+      {
+	if ((*it)->getSelect() == true)
+	  {
+	    nott = false;
+	    (*it)->getId();
+	    (*it)->setSelect(false);
+	    itNeed = it;
+	    i = 1;
+	    while (i > 0)
+	      {
+		if (itNeed == spr.end())
+		  itNeed = spr.begin();
+		itNeed++;
+		if (itNeed ==  spr.end())
+		  itNeed = spr.begin();
+		i--;
+	      }
+	    (*itNeed)->setSelect(true);
+	  }
+	it++;
+      }
+  else
+    {
+      while (it != itEnd && nott == true)
+	{
+	  if ((*it)->getSelect() == true)
+	    {
+	      (*it)->getId();
+	      itNeed = it;
+	      i = 1;
+	      while (i > 0)
+		{
+		  itNeed++;
+		  if (itNeed == spr.begin())
+		    {
+		      _error = true;
+		      i = 0;
+		    }
+		  i--;
+		}
+	      if (_error == false)
+		{
+		  if ((*itNeed)->getSprite().getColor() == sf::Color::Black || (*it)->getSprite().getColor() == sf::Color::Black)
+		    {
+		      x = (*it)->getSprite().getPosition().x;
+		      y = (*it)->getSprite().getPosition().y;
+		      x2 = (*itNeed)->getSprite().getPosition().x;
+		      y2 = (*itNeed)->getSprite().getPosition().y;
+		      (*it)->getSprite().setPosition(x2, y2);
+		      (*itNeed)->getSprite().setPosition(x, y);
+		      idTmp = (*it)->getId();
+		      (*it)->setId((*itNeed)->getId());
+		      (*itNeed)->setId(idTmp);
+		    }
+		}
+	      nott = false;
+	    }
+	  it++;
+	}
+    }
+
+}
+
+void	PuzzleGame::upDown(std::list<PuzzleSprite*>& spr)
+{
+  std::list<PuzzleSprite*>::iterator	it;
+  std::list<PuzzleSprite*>::iterator	itEnd;
+  std::list<PuzzleSprite*>::iterator	itNeed;
+  int	div;
+  bool	nott = true;
+  int	i= 0;
+  bool	_error = false;
+  int	x;
+  int	y;
+  int	x2;
+  int	y2;
+  int	idTmp;
+
+  div = powf(spr.size(), 0.5);
+  it = spr.begin();
+  itEnd = spr.end();
+  if (_isTarget == false)
+    while (it != itEnd && nott == true)
+      {
+	if ((*it)->getSelect() == true)
+	  {
+	    nott = false;
+	    (*it)->getId();
+	    (*it)->setSelect(false);
+	    itNeed = it;
+	    i = div;
+	    while (i > 0)
+	      {
+		if (itNeed == spr.end())
+		  {
+		    itNeed = spr.begin();
+		  }
+		itNeed++;
+		i--;
+	      }
+	    (*itNeed)->setSelect(true);
+	  }
+	it++;
+      }
+  else
+    {
+      while (it != itEnd && nott == true)
+	{
+	  if ((*it)->getSelect() == true)
+	    {
+	      (*it)->getId();
+	      itNeed = it;
+	      i = div;
+	      while (i > 0)
+		{
+		  itNeed++;
+		  if (itNeed == spr.begin())
+		    {
+		      _error = true;
+		      i = 0;
+		    }
+		  i--;
+		}
+	      if (_error == false)
+		{
+		  if ((*itNeed)->getSprite().getColor() == sf::Color::Black || (*it)->getSprite().getColor() == sf::Color::Black)
+		    {
+		      x = (*it)->getSprite().getPosition().x;
+		      y = (*it)->getSprite().getPosition().y;
+		      x2 = (*itNeed)->getSprite().getPosition().x;
+		      y2 = (*itNeed)->getSprite().getPosition().y;
+		      (*it)->getSprite().setPosition(x2, y2);
+		      (*itNeed)->getSprite().setPosition(x, y);
+		      idTmp = (*it)->getId();
+		      (*it)->setId((*itNeed)->getId());
+		      (*itNeed)->setId(idTmp);
+		    }
+		}
+	      nott = false;
+	    }
+	  it++;
+	}
+    }
+}
+
+bool	PuzzleGame::gestEvent(sf::Event& event, std::list<PuzzleSprite*>& spr)
+{
+  std::list<PuzzleSprite*>::iterator	it;
+  std::list<PuzzleSprite*>::iterator	itEnd;
+  
+  it = spr.begin();
+  itEnd = spr.end();
+  if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
+      return (false);
+  if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
+    {
+      if (_isTarget == false)
+	_isTarget = true;
+      else
+	_isTarget = false;
+      _diff = true;
+    }
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up)
+    {
+      _diff = true;
+      upUp(spr);
+    }
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down)
+    {
+      _diff = true;
+      upDown(spr);
+    }
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left)
+    {
+      _diff = true;
+      upLeft(spr);
+    }
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right)
+    {
+      _diff = true;
+      upRight(spr);
+    }
+  return (true);
 }
 
 void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
@@ -28,7 +408,11 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   int	id = 0;
   std::list<PuzzleSprite*>::iterator	it;
   std::list<PuzzleSprite*>::iterator	itEnd;
-
+  sf::Event	event;
+  sf::Event	last;
+  bool	isIn = true;
+  int	act = 0;
+  int	actIn = 0;
 
   x = 800;
   y = 600;
@@ -46,11 +430,11 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   y /= div;
   xPic /= div;
   yPic /= div;
-  while (posYPic <= (yPic * div))
+  while (act < (div * div))
     {
       posXPic = 0;
       posX = 0;
-      while (posXPic < (xPic * div))
+      while (actIn < div)
 	{
 	  next = new PuzzleSprite(posX, posY);
 	  next->setId(id);
@@ -58,13 +442,19 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 	  if (id < div * div)
 	    next->getSprite().setTexture(pic);
 	  else
-	    next->getSprite().setColor(sf::Color::Black);
+	    {
+	      next->setSelect(true);
+	      next->getSprite().setColor(sf::Color::Black);
+	    }	  
 	  next->getSprite().setPosition(posX, posY);
 	  next->getSprite().setTextureRect(sf::IntRect(posXPic, posYPic, (xPic), ( yPic)));
 	  posXPic += xPic;
 	  posX +=xPic;
 	  spr.push_back(next);
+	  actIn++;
+	  act++;
 	}
+      actIn = 0;
       posY += y;
       posXPic = 0;
       posYPic += yPic;
@@ -72,13 +462,66 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   it = spr.begin();
   itEnd = spr.end();
   _window.clear();
-  _window.clear();
   randImg(spr);
   display(spr, div);
   _window.display();
-  sleep(50);
+  it = spr.begin();
+  itEnd = spr.end();
+  act = 0;
+  while(isPicGood(spr) == false && isIn == true)
+    {
+      _window.pollEvent(event);
+      _diff = false;
+      if(last.key.code != event.key.code)
+      {
+	  if (event.type != 15 && event.type != 10)
+	    isIn = gestEvent(event, spr);
+	  if (event.type != 10 && last.type == 10)
+	    {
+	      isIn = gestEvent(last, spr);
+	    }
+      }
+      if (event.type == sf::Event::Closed)
+	{
+	  _window.close();
+	  isIn = false;
+	}
+      if (_diff == true)
+	{
+	  _window.clear();
+	  display(spr, div);
+	  _window.display();
+	}
+      last = event;
+      usleep(15000);
+    }
+  _window.clear();
+  _window.display();
 }
 
+void	PuzzleGame::colorRect(sf::Color col, int xPic, int posXPic, int posYPic, int yPic)
+{
+  sf::RectangleShape	*line;
+
+  line = new sf::RectangleShape(sf::Vector2f((float)xPic, 5.0f));
+  line->setPosition((float)posXPic, (float)posYPic);
+  line->setFillColor(col);
+  _window.draw(*line);
+  line = new sf::RectangleShape(sf::Vector2f((float)yPic, 5.0f));
+  line->setPosition((float)posXPic, (float)posYPic);
+  line->setFillColor(col);
+  line->setRotation(90.0f);
+  _window.draw(*line);
+  line = new sf::RectangleShape(sf::Vector2f((float)xPic, 5.0f));
+  line->setPosition((float)posXPic, (float)posYPic + (float)yPic - (float)5);
+  line->setFillColor(col);
+  _window.draw(*line);
+  line = new sf::RectangleShape(sf::Vector2f((float)yPic, 5.0f));
+  line->setPosition((float)posXPic + (float)xPic, (float)posYPic);
+  line->setRotation(90.0f);
+  line->setFillColor(col);
+  _window.draw(*line);
+}
 
 void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
 {
@@ -95,14 +538,35 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
   std::list<PuzzleSprite*>::iterator	itEnd;
   int					need = 0;
   int					act = 0;
+  
 
   x /= div;
   y /= div;
   xPic /= div;
   yPic /= div;
   it = spr.begin();
-  _window.clear();
   need = div * div;
+  while (posYPic <= (yPic * div) && need > act)
+    {
+      posXPic = 0;
+      posX = 0;
+      while (posXPic < (xPic * div))
+	{
+	  _window.draw((*it)->getSprite());
+	  act++;
+	  posXPic += xPic;
+	  posX +=xPic;
+	  it++;
+	}
+      posY += y;
+      posYPic += yPic;
+    }
+  posXPic = 0;
+  posYPic = 0;
+  posX = 0;
+  posY = 0;
+  it = spr.begin();
+  act = 0;
   while (posYPic <= (yPic * div) && need > act)
     {
       posXPic = 0;
@@ -112,16 +576,10 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
 	  if ((*it)->getSelect() == true)
 	    {
 	      if (_isTarget == true)
-		;//_window.draw(sf::RectangleShape(posXPic, posYPic, (posXPic + xPic), (posYPic + yPic), sf::Color(0, 255, 255, 1), 3));
+		colorRect(sf::Color::Yellow, xPic, posXPic, posYPic, yPic);
 	      else
-		{
-		  //  _window.draw(sf::Shape::rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 0, 255, 10), 10));
-		}
+		colorRect(sf::Color::White, xPic, posXPic, posYPic, yPic);
 	    }
-	  //_window.Draw(sf::Shape::Rectangle(posXPic, posYPic, posXPic + xPic, posYPic + yPic, sf::Color(255, 255, 0, 255), 10));
-	  _window.draw((*it)->getSprite());
-	  _window.display();
-	  //sleep(1);
 	  act++;
 	  posXPic += xPic;
 	  posX +=xPic;
@@ -130,6 +588,15 @@ void	PuzzleGame::display(std::list<PuzzleSprite*>& spr, int div)
       posY += y;
       posYPic += yPic;
     }
+  spr.sort(compare_id);
+}
+
+bool	compare_id(const PuzzleSprite* first, const PuzzleSprite* second)
+{
+  if (first->getId() > second->getId())
+    return (false);
+  else
+    return (true);
 }
 
 void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
@@ -150,24 +617,20 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
   bool	in = false;
 
   srand(time(NULL));
-  
   div = spr.size();
   div = powf((float)(div), 0.5);
   need = spr.size() * 100;
-  std::cout << "div :" << div << std::endl;
   while (bcl < need)
     {
       it = spr.begin();
       it2 = spr.begin();
       while (in == false)
 	{
-	  std::cout << "rd:" << rd << ", rd 2 " << rd2 << std::endl;
 	  rd = rand() % (div * div);
 	  rd2 = rand() % (div * div);
 	  if (rd < (div*div) && rd2 < (div*div))
 	    in = true;
 	}
-      std::cout << "out" << std::endl;
       in = false;
       std::advance(it, rd);
       std::advance(it2, rd2);
@@ -178,12 +641,16 @@ void	PuzzleGame::randImg(std::list<PuzzleSprite*>& spr)
       (*it)->getSprite().setPosition(x2, y2);
       (*it2)->getSprite().setPosition(x, y);
       idTmp = (*it)->getId();
-      (*it)->setId((*it2)->getId());
+      (*it)->setId((*it2)->getId());      
       (*it2)->setId(idTmp);
+      //tmp = (*it);
+      //(*it) = (*it2);
+      //(*it) = (tmp);
       bcl++;
     }
   it = spr.begin();
-  (*it)->setSelect(true);
+  it2 = spr.end();
+  spr.sort(compare_id);
 }
 
 bool	PuzzleGame::isPicGood(std::list<PuzzleSprite*>& spr)
@@ -199,5 +666,7 @@ bool	PuzzleGame::isPicGood(std::list<PuzzleSprite*>& spr)
       it++;
     }
   _window.display();
-  sleep(5);
+  if (it == itEnd)
+    return (true);
+  return (false);
 }

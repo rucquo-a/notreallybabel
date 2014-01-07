@@ -134,7 +134,7 @@ void	Choose::mainDraw()
   drawTitle(title);
   getWindow().display();
   loadLib();
-  while (isIn == true)
+  while (isIn == true && getWindow().isOpen() == true)
     {
       getWindow().pollEvent(event);
       if (event.type != 15 && event.type != 10)
