@@ -408,16 +408,16 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   int	actIn = 0;
   Leap::Controller	ctrl;
   Leap::Listener                lsnr;
-  Leap::Frame                   fram;
-  Leap::Frame                   lastFram;
+  //Leap::Frame                   fram;
+  //Leap::Frame                   lastFram;
   //Leap::Gesture			gest;
-
+  
   ctrl.addListener(lsnr);
-  ctrl.enableGesture(Leap::Gesture::TYPE_CIRCLE);
+  /*  ctrl.enableGesture(Leap::Gesture::TYPE_CIRCLE);
   ctrl.enableGesture(Leap::Gesture::TYPE_KEY_TAP);
   ctrl.enableGesture(Leap::Gesture::TYPE_SCREEN_TAP);
   ctrl.enableGesture(Leap::Gesture::TYPE_SWIPE);
-
+  */
 
   x = 800;
   y = 600;
@@ -474,14 +474,20 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
   it = spr.begin();
   itEnd = spr.end();
   act = 0;
-  Leap::Frame	frame;
-  Leap::Frame	lastFrame;
-  Leap::GestureList	gest;
-  frame = ctrl.frame();
-  lastFrame = frame;
+  /*if (ctrl.isConnected())
+    {
+      std::cout << "coucou" << std::endl;
+      //Leap::Frame	frame = ctrl.frame();
+      //Leap::Frame	lastFrame = ctrl.frame();
+      //Leap::Gesture/*List*//*	gest;
+    }
+  else
+  std::cout << "fuck you!" << std::endl;*/
+  //frame = ctrl.frame();
+  //lastFrame = frame;
   while(isPicGood(spr) == false && isIn == true)
     {
-      if (ctrl.isConnected())
+      /*  if (ctrl.isConnected())
 	{
 	  frame = ctrl.frame();
 	  gest = frame.gestures(lastFrame);
@@ -508,7 +514,7 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 	      }
 	    }
 	  //}
-	}
+	  }*/
       _window.pollEvent(event);
       _diff = false;
       if(last.key.code != event.key.code)
@@ -533,9 +539,9 @@ void	PuzzleGame::mainGame(sf::Texture& pic, std::string diff)
 	}
       last = event;
       usleep(15000);
-      lastFrame = frame;
-    }
-  _window.clear();
+      //lastFrame = frame;
+}
+_window.clear();
   _window.display();
 }
 

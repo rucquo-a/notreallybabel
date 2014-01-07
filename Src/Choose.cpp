@@ -75,7 +75,7 @@ void	Choose::createButton(AWin* window, std::string &name)
   getWindow().draw(sp);
   getWindow().display();
   addButton(game);
-    game->setWin(window);
+  game->setWin(window);
   _xPlace += 200;
   if (_xPlace >= 800)
     {
